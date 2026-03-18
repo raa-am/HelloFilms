@@ -23,7 +23,10 @@ useSeoMeta({
   <UApp>
     <UHeader>
       <template #left>
-        <NuxtLink to="/" class="font-bold text-lg tracking-tight">
+        <NuxtLink
+          to="/"
+          class="font-bold text-lg tracking-tight"
+        >
           HelloFilms
         </NuxtLink>
       </template>

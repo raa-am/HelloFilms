@@ -31,19 +31,34 @@ useSeoMeta({
     >
       <div class="absolute inset-0 bg-gradient-to-t from-background to-transparent" />
     </div>
-    <USkeleton v-else-if="pending" class="h-64 md:h-96 w-full" />
+    <USkeleton
+      v-else-if="pending"
+      class="h-64 md:h-96 w-full"
+    />
 
     <UContainer class="py-8">
-      <NuxtLink to="/" class="inline-flex items-center gap-1 text-sm text-muted hover:text-default mb-6">
-        <UIcon name="i-lucide-arrow-left" class="size-4" />
+      <NuxtLink
+        to="/"
+        class="inline-flex items-center gap-1 text-sm text-muted hover:text-default mb-6"
+      >
+        <UIcon
+          name="i-lucide-arrow-left"
+          class="size-4"
+        />
         Retour
       </NuxtLink>
 
-      <div v-if="error" class="text-center py-12 text-red-500">
+      <div
+        v-if="error"
+        class="text-center py-12 text-red-500"
+      >
         {{ error }}
       </div>
 
-      <div v-else-if="pending" class="flex gap-8">
+      <div
+        v-else-if="pending"
+        class="flex gap-8"
+      >
         <USkeleton class="w-48 shrink-0 aspect-[2/3] rounded-xl" />
         <div class="flex-1 space-y-4 pt-2">
           <USkeleton class="h-8 w-2/3 rounded" />
@@ -52,7 +67,10 @@ useSeoMeta({
         </div>
       </div>
 
-      <div v-else-if="movie" class="flex flex-col md:flex-row gap-8">
+      <div
+        v-else-if="movie"
+        class="flex flex-col md:flex-row gap-8"
+      >
         <div class="shrink-0">
           <img
             v-if="posterUrl"
@@ -60,8 +78,14 @@ useSeoMeta({
             :alt="movie.title"
             class="w-48 rounded-xl shadow-lg mx-auto md:mx-0"
           >
-          <div v-else class="w-48 aspect-[2/3] rounded-xl bg-elevated flex items-center justify-center">
-            <UIcon name="i-lucide-film" class="size-12 text-muted" />
+          <div
+            v-else
+            class="w-48 aspect-[2/3] rounded-xl bg-elevated flex items-center justify-center"
+          >
+            <UIcon
+              name="i-lucide-film"
+              class="size-12 text-muted"
+            />
           </div>
         </div>
 
@@ -74,7 +98,10 @@ useSeoMeta({
             <span>{{ movie.release_date?.slice(0, 4) }}</span>
             <span v-if="movie.runtime">{{ movie.runtime }} min</span>
             <div class="flex items-center gap-1">
-              <UIcon name="i-lucide-star" class="size-4 text-yellow-400" />
+              <UIcon
+                name="i-lucide-star"
+                class="size-4 text-yellow-400"
+              />
               <span class="font-semibold text-default">{{ movie.vote_average.toFixed(1) }}</span>
               <span>({{ movie.vote_count.toLocaleString('fr-FR') }} votes)</span>
             </div>
@@ -91,7 +118,10 @@ useSeoMeta({
             </UBadge>
           </div>
 
-          <p v-if="movie.tagline" class="mt-4 italic text-muted text-sm">
+          <p
+            v-if="movie.tagline"
+            class="mt-4 italic text-muted text-sm"
+          >
             « {{ movie.tagline }} »
           </p>
 
@@ -99,12 +129,18 @@ useSeoMeta({
             {{ movie.overview || 'Aucun synopsis disponible.' }}
           </p>
 
-          <div v-if="directors.length" class="mt-4 text-sm">
+          <div
+            v-if="directors.length"
+            class="mt-4 text-sm"
+          >
             <span class="text-muted">Réalisation — </span>
             <span class="font-medium">{{ directors.map(d => d.name).join(', ') }}</span>
           </div>
 
-          <div v-if="topCast.length" class="mt-6">
+          <div
+            v-if="topCast.length"
+            class="mt-6"
+          >
             <h2 class="font-semibold mb-3">
               Têtes d'affiche
             </h2>
@@ -121,8 +157,14 @@ useSeoMeta({
                     :alt="actor.name"
                     class="w-full h-full object-cover"
                   >
-                  <div v-else class="w-full h-full flex items-center justify-center">
-                    <UIcon name="i-lucide-user" class="size-8 text-muted" />
+                  <div
+                    v-else
+                    class="w-full h-full flex items-center justify-center"
+                  >
+                    <UIcon
+                      name="i-lucide-user"
+                      class="size-8 text-muted"
+                    />
                   </div>
                 </div>
                 <p class="text-xs font-medium leading-tight line-clamp-2">

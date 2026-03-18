@@ -6,6 +6,11 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@vueuse/nuxt'
   ],
+  devtools: {
+    enabled: true
+  },
+
+  css: ['~/assets/css/main.css'],
   runtimeConfig: {
     apiKey: process.env.API_KEY || '',
     accessToken: process.env.ACCESS_KEY || '',
@@ -14,6 +19,8 @@ export default defineNuxtConfig({
       tmdbAccessToken: process.env.ACCESS_KEY || ''
     }
   },
+
+  compatibilityDate: '2025-01-15',
   vite: {
     optimizeDeps: {
       include: [
@@ -22,13 +29,6 @@ export default defineNuxtConfig({
       ]
     }
   },
-  devtools: {
-    enabled: true
-  },
-
-  css: ['~/assets/css/main.css'],
-
-  compatibilityDate: '2025-01-15',
 
   eslint: {
     config: {

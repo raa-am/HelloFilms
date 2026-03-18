@@ -17,7 +17,10 @@ const year = computed(() =>
 </script>
 
 <template>
-  <NuxtLink :to="`/movies/${movie.id}`" class="group block">
+  <NuxtLink
+    :to="`/movies/${movie.id}`"
+    class="group block"
+  >
     <div class="rounded-xl overflow-hidden bg-elevated transition-transform duration-200 group-hover:-translate-y-1 group-hover:shadow-lg">
       <div class="aspect-[2/3] bg-accented">
         <img
@@ -27,8 +30,14 @@ const year = computed(() =>
           class="w-full h-full object-cover"
           loading="lazy"
         >
-        <div v-else class="w-full h-full flex items-center justify-center text-muted">
-          <UIcon name="i-lucide-film" class="size-12" />
+        <div
+          v-else
+          class="w-full h-full flex items-center justify-center text-muted"
+        >
+          <UIcon
+            name="i-lucide-film"
+            class="size-12"
+          />
         </div>
       </div>
 
@@ -39,7 +48,10 @@ const year = computed(() =>
         <div class="flex items-center justify-between mt-1">
           <span class="text-xs text-muted">{{ year }}</span>
           <div class="flex items-center gap-1">
-            <UIcon name="i-lucide-star" class="size-3 text-yellow-400" />
+            <UIcon
+              name="i-lucide-star"
+              class="size-3 text-yellow-400"
+            />
             <span class="text-xs font-medium">{{ movie.vote_average.toFixed(1) }}</span>
           </div>
         </div>

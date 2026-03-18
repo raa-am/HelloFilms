@@ -19,7 +19,7 @@ const alphaOnly = helpers.withMessage(
 
 const alphanumeric = helpers.withMessage(
   'Le message ne doit contenir que des caractères alphanumériques.',
-  helpers.regex(/^[a-zA-Z0-9À-ÿ\s.,!?'"()\-]+$/)
+  helpers.regex(/^[a-zA-Z0-9À-ÿ\s.,!?'"()-]+$/)
 )
 
 const rules = {
@@ -56,8 +56,14 @@ async function onSubmit() {
 </script>
 
 <template>
-  <UPageCard title="Laisser un commentaire" variant="subtle">
-    <form class="space-y-4" @submit.prevent="onSubmit">
+  <UPageCard
+    title="Laisser un commentaire"
+    variant="subtle"
+  >
+    <form
+      class="space-y-4"
+      @submit.prevent="onSubmit"
+    >
       <UFormField
         label="Nom d'utilisateur"
         :error="v$.username.$error ? v$.username.$errors[0]?.$message as string : undefined"
@@ -103,7 +109,11 @@ async function onSubmit() {
         </div>
       </UFormField>
 
-      <UButton type="submit" color="primary" class="w-full">
+      <UButton
+        type="submit"
+        color="primary"
+        class="w-full"
+      >
         Publier
       </UButton>
     </form>

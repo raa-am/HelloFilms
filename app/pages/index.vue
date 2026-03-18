@@ -54,7 +54,10 @@ function onSearch(value: string) {
       />
     </div>
 
-    <div v-if="store.error" class="text-center py-12 text-red-500">
+    <div
+      v-if="store.error"
+      class="text-center py-12 text-red-500"
+    >
       {{ store.error }}
     </div>
 
@@ -66,15 +69,24 @@ function onSearch(value: string) {
           :movie="movie"
         />
         <template v-if="store.pending">
-          <MovieCardSkeleton v-for="n in 10" :key="`sk-${n}`" />
+          <MovieCardSkeleton
+            v-for="n in 10"
+            :key="`sk-${n}`"
+          />
         </template>
       </UPageGrid>
 
-      <div v-if="!store.pending && store.movies.length === 0" class="text-center py-12 text-muted">
+      <div
+        v-if="!store.pending && store.movies.length === 0"
+        class="text-center py-12 text-muted"
+      >
         Aucun film trouvé.
       </div>
 
-      <div ref="sentinel" class="h-4 mt-8" />
+      <div
+        ref="sentinel"
+        class="h-4 mt-8"
+      />
     </template>
   </UContainer>
 </template>

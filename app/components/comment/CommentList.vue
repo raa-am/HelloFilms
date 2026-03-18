@@ -16,7 +16,10 @@ function formatDate(ts: number) {
 
 <template>
   <div class="space-y-4">
-    <p v-if="comments.length === 0" class="text-sm text-muted text-center py-6">
+    <p
+      v-if="comments.length === 0"
+      class="text-sm text-muted text-center py-6"
+    >
       Aucun commentaire pour ce film.
     </p>
 
@@ -34,7 +37,11 @@ function formatDate(ts: number) {
             {{ formatDate(comment.createdAt) }}
           </p>
         </div>
-        <UBadge color="primary" variant="subtle" class="shrink-0">
+        <UBadge
+          color="primary"
+          variant="subtle"
+          class="shrink-0"
+        >
           ★ {{ comment.rating }}/10
         </UBadge>
       </div>
