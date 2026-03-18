@@ -1,17 +1,31 @@
 <script setup lang="ts">
 import { useMoviesStore } from '~/stores/movies'
+import type { PaginatedResponse, Movie } from '~/types/tmdb'
 
 useSeoMeta({
   title: 'HelloFilms — Films du moment',
   description: 'Découvrez et explorez les meilleurs films du moment.'
 })
 
+const config = useRuntimeConfig()
+
+const { data: initialData } = await useFetch<PaginatedResponse<Movie>>(
+  'https://api.themoviedb.org/3/movie/popular',
+  {
+    headers: {
+      Authorization: `Bearer ${config.public.tmdbAccessToken}`,
+      accept: 'application/json'
+    },
+    query: { language: 'fr-FR', page: 1 }
+  }
+)
+
 const store = useMoviesStore()
 
-// Initial load
-onMounted(() => store.fetchMovies(true))
+if (initialData.value) {
+  store.init(initialData.value.results, initialData.value.total_pages)
+}
 
-// Infinite scroll sentinel
 const sentinel = ref<HTMLElement | null>(null)
 
 useIntersectionObserver(sentinel, ([entry]) => {
@@ -19,6 +33,10 @@ useIntersectionObserver(sentinel, ([entry]) => {
     store.loadMore()
   }
 })
+
+function onSearch(value: string) {
+  store.setQuery(value)
+}
 </script>
 
 <template>
@@ -28,11 +46,11 @@ useIntersectionObserver(sentinel, ([entry]) => {
         Films du moment
       </h1>
       <UInput
-        v-model="store.query"
+        :model-value="store.query"
         icon="i-lucide-search"
         placeholder="Rechercher un film..."
         class="w-full sm:w-72"
-        @update:model-value="store.setQuery($event)"
+        @update:model-value="onSearch"
       />
     </div>
 
@@ -40,22 +58,23 @@ useIntersectionObserver(sentinel, ([entry]) => {
       {{ store.error }}
     </div>
 
-    <div v-else>
+    <template v-else>
       <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         <MovieCard
           v-for="movie in store.movies"
           :key="movie.id"
           :movie="movie"
         />
-        <MovieCardSkeleton v-if="store.pending" v-for="n in 10" :key="`sk-${n}`" />
+        <template v-if="store.pending">
+          <MovieCardSkeleton v-for="n in 10" :key="`sk-${n}`" />
+        </template>
       </div>
 
       <div v-if="!store.pending && store.movies.length === 0" class="text-center py-12 text-muted">
         Aucun film trouvé.
       </div>
 
-      <!-- Infinite scroll sentinel -->
       <div ref="sentinel" class="h-4 mt-8" />
-    </div>
+    </template>
   </div>
 </template>

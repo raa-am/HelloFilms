@@ -8,17 +8,18 @@ export const useMoviesStore = defineStore('movies', () => {
 
   const movies = ref<Movie[]>([])
   const query = ref('')
-  const page = ref(1)
+  const page = ref(2)
   const totalPages = ref(1)
   const pending = ref(false)
   const error = ref<string | null>(null)
 
-  const headers = {
-    Authorization: `Bearer ${config.public.tmdbAccessToken}`,
-    accept: 'application/json'
-  }
-
   const hasMore = computed(() => page.value <= totalPages.value)
+
+  function init(initialMovies: Movie[], total: number) {
+    movies.value = initialMovies
+    totalPages.value = total
+    page.value = 2
+  }
 
   async function fetchMovies(reset = false) {
     if (pending.value) return
@@ -39,10 +40,12 @@ export const useMoviesStore = defineStore('movies', () => {
         ...(query.value.trim() ? { query: query.value.trim() } : {})
       })
 
-      const data = await $fetch<PaginatedResponse<Movie>>(
-        `${endpoint}?${params}`,
-        { headers }
-      )
+      const data = await $fetch<PaginatedResponse<Movie>>(`${endpoint}?${params}`, {
+        headers: {
+          Authorization: `Bearer ${config.public.tmdbAccessToken}`,
+          accept: 'application/json'
+        }
+      })
 
       if (reset) {
         movies.value = data.results
@@ -78,6 +81,7 @@ export const useMoviesStore = defineStore('movies', () => {
     pending,
     error,
     hasMore,
+    init,
     fetchMovies,
     setQuery,
     loadMore
