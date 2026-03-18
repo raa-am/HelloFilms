@@ -40,8 +40,8 @@ function onSearch(value: string) {
 </script>
 
 <template>
-  <div class="container mx-auto px-4 py-8">
-    <div class="flex flex-col sm:flex-row sm:items-center gap-4 mb-8">
+  <UContainer>
+    <div class="flex flex-col sm:flex-row sm:items-center gap-4 py-8 mb-4">
       <h1 class="text-3xl font-bold flex-1">
         Films du moment
       </h1>
@@ -59,7 +59,7 @@ function onSearch(value: string) {
     </div>
 
     <template v-else>
-      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+      <UPageGrid>
         <MovieCard
           v-for="movie in store.movies"
           :key="movie.id"
@@ -68,7 +68,7 @@ function onSearch(value: string) {
         <template v-if="store.pending">
           <MovieCardSkeleton v-for="n in 10" :key="`sk-${n}`" />
         </template>
-      </div>
+      </UPageGrid>
 
       <div v-if="!store.pending && store.movies.length === 0" class="text-center py-12 text-muted">
         Aucun film trouvé.
@@ -76,5 +76,5 @@ function onSearch(value: string) {
 
       <div ref="sentinel" class="h-4 mt-8" />
     </template>
-  </div>
+  </UContainer>
 </template>
