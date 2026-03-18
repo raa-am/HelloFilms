@@ -2,13 +2,23 @@
 export default defineNuxtConfig({
   modules: [
     '@nuxt/eslint',
-    '@nuxt/ui'
+    '@nuxt/ui',
+    '@pinia/nuxt',
+    '@vueuse/nuxt'
   ],
-vite: {
+  runtimeConfig: {
+    apiKey: process.env.API_KEY || '',
+    accessToken: process.env.ACCESS_KEY || '',
+    public: {
+      tmdbApiKey: process.env.API_KEY || '',
+      tmdbAccessToken: process.env.ACCESS_KEY || ''
+    }
+  },
+  vite: {
     optimizeDeps: {
       include: [
         '@vue/devtools-core',
-        '@vue/devtools-kit',
+        '@vue/devtools-kit'
       ]
     }
   },

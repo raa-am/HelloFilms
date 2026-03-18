@@ -14,13 +14,25 @@
     "@iconify-json/lucide": "^1.2.98",
     "@iconify-json/simple-icons": "^1.2.74",
     "@nuxt/ui": "^4.5.1",
+    "@tinymce/tinymce-vue": "^6.3.0",
     "nuxt": "^4.4.2",
+    "pinia": "^3.0.4",
     "tailwindcss": "^4.2.1"
   },
   "devDependencies": {
     "@nuxt/eslint": "^1.15.2",
+    "@pinia/nuxt": "^0.11.3",
+    "@testing-library/vue": "^8.1.0",
+    "@vue/test-utils": "^2.4.6",
+    "@vuelidate/core": "^2.0.3",
+    "@vuelidate/validators": "^2.0.4",
+    "@vueuse/nuxt": "^14.2.1",
     "eslint": "^10.0.3",
+    "prettier": "^3.8.1",
+    "stylelint": "^17.4.0",
+    "stylelint-config-standard": "^40.0.0",
     "typescript": "^5.9.3",
+    "vitest": "^4.1.0",
     "vue-tsc": "^3.2.5"
   },
   "packageManager": "pnpm@10.32.1"
