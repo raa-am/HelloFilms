@@ -12,11 +12,11 @@ export default defineNuxtConfig({
 
   css: ['~/assets/css/main.css'],
   runtimeConfig: {
-    apiKey: process.env.API_KEY || '',
-    accessToken: process.env.ACCESS_KEY || '',
+    apiKey: '',
+    accessToken: '',
     public: {
-      tmdbApiKey: process.env.API_KEY || '',
-      tmdbAccessToken: process.env.ACCESS_KEY || ''
+      tmdbApiKey: '',
+      tmdbAccessToken: ''
     }
   },
 

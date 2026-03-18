@@ -29,7 +29,7 @@ if (initialData.value) {
 const sentinel = ref<HTMLElement | null>(null)
 
 useIntersectionObserver(sentinel, ([entry]) => {
-  if (entry.isIntersecting && !store.pending && store.hasMore) {
+  if (entry?.isIntersecting && !store.pending && store.hasMore) {
     store.loadMore()
   }
 })
