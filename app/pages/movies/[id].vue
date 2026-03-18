@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const route = useRoute()
-const { movie, topCast, directors, pending, error } = useMovieDetail(route.params.id as string)
+const movieId = route.params.id as string
+const { movie, topCast, directors, pending, error } = useMovieDetail(movieId)
+const { comments, add } = useComments(movieId)
 
 const posterUrl = computed(() =>
   movie.value?.poster_path
@@ -132,6 +134,17 @@ useSeoMeta({
               </div>
             </div>
           </div>
+        </div>
+      </div>
+      <USeparator class="my-10" />
+
+      <div class="grid md:grid-cols-2 gap-8">
+        <CommentForm @submit="add" />
+        <div>
+          <h2 class="font-semibold mb-4">
+            Commentaires
+          </h2>
+          <CommentList :comments="comments" />
         </div>
       </div>
     </UContainer>
