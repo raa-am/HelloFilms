@@ -19,7 +19,7 @@ const year = computed(() =>
 <template>
   <NuxtLink
     :to="`/movies/${movie.id}`"
-    class="group block"
+    class="group block animate-fade-up"
   >
     <div class="rounded-xl overflow-hidden bg-elevated transition-transform duration-200 group-hover:-translate-y-1 group-hover:shadow-lg">
       <div class="aspect-[2/3] bg-accented">

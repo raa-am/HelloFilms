@@ -37,7 +37,7 @@ useSeoMeta({
     </UHeader>
 
     <UMain>
-      <NuxtPage />
+      <NuxtPage :transition="{ name: 'page', mode: 'out-in' }" />
     </UMain>
 
     <UFooter>

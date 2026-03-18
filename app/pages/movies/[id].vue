@@ -178,17 +178,19 @@ useSeoMeta({
           </div>
         </div>
       </div>
-      <USeparator class="my-10" />
 
-      <div class="grid md:grid-cols-2 gap-8">
-        <CommentForm @submit="add" />
-        <div>
-          <h2 class="font-semibold mb-4">
-            Commentaires
-          </h2>
-          <CommentList :comments="comments" />
+      <template v-if="movie">
+        <USeparator class="my-10" />
+        <div class="grid md:grid-cols-2 gap-8">
+          <CommentForm @submit="add" />
+          <div>
+            <h2 class="font-semibold mb-4">
+              Commentaires
+            </h2>
+            <CommentList :comments="comments" />
+          </div>
         </div>
-      </div>
+      </template>
     </UContainer>
   </div>
 </template>

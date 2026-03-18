@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core'
-import { required, minLength, maxLength, helpers } from '@vuelidate/validators'
+import { required, minLength, maxLength, between, helpers } from '@vuelidate/validators'
+
 
 const emit = defineEmits<{
   submit: [data: { username: string, message: string, rating: number }]
@@ -36,7 +37,7 @@ const rules = {
     alphanumeric
   },
   rating: {
-    required: helpers.withMessage('La note est requise.', required)
+    between: helpers.withMessage('La note doit être entre 1 et 10.', between(1, 10))
   }
 }
 
