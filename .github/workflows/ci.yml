@@ -1,4 +1,4 @@
-name: ci
+name: CI
 
 on: push
 
@@ -7,23 +7,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # 1️⃣ Checkout du code
       - name: Checkout
         uses: actions/checkout@v4
 
+      # 2️⃣ Installer Node
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: 'pnpm'
 
+      # 3️⃣ Installer pnpm
       - name: Install pnpm
-        run: npm install -g pnpm@10
+        run: npm install -g pnpm@10.32.1
 
+      # 4️⃣ Installer les dépendances avec pnpm
       - name: Install dependencies
         run: pnpm install
 
+      # 5️⃣ Lint
       - name: Lint
         run: pnpm run lint
 
+      # 6️⃣ Typecheck
       - name: Typecheck
         run: pnpm run typecheck
+
+      # 7️⃣ Build Nuxt (optionnel, mais recommandé)
+      - name: Build
+        run: pnpm run build
