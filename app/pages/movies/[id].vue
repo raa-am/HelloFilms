@@ -4,6 +4,7 @@ const movieId = route.params.id as string
 const { movie, topCast, directors, pending, error } = useMovieDetail(movieId)
 const { comments, add } = useComments(movieId)
 
+// w500 suffit pour l'affiche, on garde l'original pour le backdrop pleine largeur
 const posterUrl = computed(() =>
   movie.value?.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.value.poster_path}`

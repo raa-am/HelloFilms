@@ -5,12 +5,14 @@ const props = defineProps<{
   movie: Movie
 }>()
 
+// w500 est un bon compromis qualité/performance pour une grille de cartes
 const imageUrl = computed(() =>
   props.movie.poster_path
     ? `https://image.tmdb.org/t/p/w500${props.movie.poster_path}`
     : null
 )
 
+// On extrait uniquement l'année depuis la date ISO (ex: "2024-03-15" → "2024")
 const year = computed(() =>
   props.movie.release_date ? props.movie.release_date.slice(0, 4) : ''
 )

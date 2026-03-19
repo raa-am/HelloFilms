@@ -5,6 +5,7 @@ defineProps<{
   comments: Comment[]
 }>()
 
+// Formate un timestamp en date lisible, ex: "15 mars 2024"
 function formatDate(ts: number) {
   return new Intl.DateTimeFormat('fr-FR', {
     day: 'numeric',

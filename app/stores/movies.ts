@@ -8,6 +8,7 @@ export const useMoviesStore = defineStore('movies', () => {
 
   const movies = ref<Movie[]>([])
   const query = ref('')
+  // La page démarre à 2 car la page 1 est chargée côté serveur via useFetch dans index.vue
   const page = ref(2)
   const totalPages = ref(1)
   const pending = ref(false)
@@ -15,6 +16,7 @@ export const useMoviesStore = defineStore('movies', () => {
 
   const hasMore = computed(() => page.value <= totalPages.value)
 
+  // Appelé depuis index.vue après le fetch SSR pour hydrater le store côté client
   function init(initialMovies: Movie[], total: number) {
     movies.value = initialMovies
     totalPages.value = total
@@ -30,6 +32,7 @@ export const useMoviesStore = defineStore('movies', () => {
 
     try {
       const currentPage = reset ? 1 : page.value
+      // Bascule automatiquement vers l'endpoint de recherche si une query est active
       const endpoint = query.value.trim()
         ? `${TMDB_BASE_URL}/search/movie`
         : `${TMDB_BASE_URL}/movie/popular`
@@ -48,6 +51,7 @@ export const useMoviesStore = defineStore('movies', () => {
       })
 
       if (reset) {
+        // On écrase la liste lors d'une nouvelle recherche ou d'un changement de query
         movies.value = data.results
         page.value = 2
       } else {
@@ -66,6 +70,7 @@ export const useMoviesStore = defineStore('movies', () => {
 
   function setQuery(value: string) {
     query.value = value
+    // Reset systématique à chaque nouvelle recherche pour repartir de la page 1
     fetchMovies(true)
   }
 

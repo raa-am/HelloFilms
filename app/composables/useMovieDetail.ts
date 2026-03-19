@@ -10,6 +10,7 @@ export function useMovieDetail(movieId: number | string) {
     accept: 'application/json'
   }
 
+  // Les deux appels se font en parallèle — Nuxt les résout simultanément
   const { data: movie, status: movieStatus, error: movieError } = useFetch<MovieDetail>(
     `${TMDB_BASE_URL}/movie/${movieId}`,
     { headers, query: { language: 'fr-FR' } }
@@ -23,6 +24,7 @@ export function useMovieDetail(movieId: number | string) {
   const pending = computed(() => movieStatus.value === 'pending')
   const error = computed(() => movieError.value ? 'Impossible de charger les informations du film.' : null)
 
+  // On limite à 10 acteurs pour ne pas surcharger l'affichage
   const topCast = computed(() => credits.value?.cast.slice(0, 10) ?? [])
 
   const directors = computed<CrewMember[]>(() =>

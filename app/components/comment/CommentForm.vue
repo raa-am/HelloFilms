@@ -12,11 +12,13 @@ const form = reactive({
   rating: 0
 })
 
+// Lettres uniquement (accents inclus) — pas de chiffres ni de caractères spéciaux
 const alphaOnly = helpers.withMessage(
   'Le nom ne doit contenir que des lettres.',
   helpers.regex(/^[a-zA-ZÀ-ÿ\s]+$/)
 )
 
+// Alphanumérique + ponctuation courante — on bloque le HTML et les caractères exotiques
 const alphanumeric = helpers.withMessage(
   'Le message ne doit contenir que des caractères alphanumériques.',
   helpers.regex(/^[a-zA-Z0-9À-ÿ\s.,!?'"()-]+$/)
@@ -48,6 +50,7 @@ async function onSubmit() {
 
   emit('submit', { ...form })
 
+  // On remet le formulaire à zéro après soumission
   form.username = ''
   form.message = ''
   form.rating = 0
