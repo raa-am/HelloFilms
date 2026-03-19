@@ -46,7 +46,9 @@ const editorConfig = {
   height: 180,
   menubar: false,
   plugins: ['lists', 'emoticons'],
-  toolbar: 'bold italic underline | bullist numlist | link emoticons',
+  toolbar: 'bold italic underline | bullist numlist | emoticons',
+  toolbar_mode: 'wrap',
+  block_formats: '',
   content_style: 'body { background: #0f172b; color: #fff; font-family: inherit; font-size: 14px; }',
   skin: 'oxide-dark',
   content_css: 'dark'

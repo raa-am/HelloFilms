@@ -1,9 +1,23 @@
 <script setup lang="ts">
 import type { Comment } from '~/types/comment'
 
-defineProps<{
+const props = defineProps<{
   comments: Comment[]
 }>()
+
+type SortOrder = 'desc' | 'asc'
+const order = ref<SortOrder>('desc')
+
+const sorted = computed(() =>
+  [...props.comments].sort((a, b) =>
+    order.value === 'desc' ? b.createdAt - a.createdAt : a.createdAt - b.createdAt
+  )
+)
+
+const options = [
+  { label: 'Plus récent', value: 'desc' as SortOrder },
+  { label: 'Plus ancien', value: 'asc' as SortOrder }
+]
 
 // Formate un timestamp en date lisible, ex: "15 mars 2024"
 function formatDate(ts: number) {
@@ -17,6 +31,19 @@ function formatDate(ts: number) {
 
 <template>
   <div class="space-y-3">
+    <div
+      v-if="comments.length > 0"
+      class="flex items-center justify-between mb-1"
+    >
+      <span class="text-xs text-muted">{{ comments.length }} commentaire{{ comments.length > 1 ? 's' : '' }}</span>
+      <USelect
+        v-model="order"
+        :items="options"
+        value-key="value"
+        size="xs"
+      />
+    </div>
+
     <p
       v-if="comments.length === 0"
       class="text-sm text-muted text-center py-8"
@@ -25,7 +52,7 @@ function formatDate(ts: number) {
     </p>
 
     <div
-      v-for="comment in comments"
+      v-for="comment in sorted"
       :key="comment.id"
       class="rounded-xl border border-default bg-elevated/40 p-4"
     >
