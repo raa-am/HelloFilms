@@ -145,13 +145,13 @@ useSeoMeta({
             <h2 class="font-semibold mb-3">
               Têtes d'affiche
             </h2>
-            <div class="flex gap-3 overflow-x-auto pb-2">
+            <div class="flex gap-3 overflow-x-auto pb-2 p-1">
               <div
                 v-for="actor in topCast"
                 :key="actor.id"
                 class="shrink-0 w-20 text-center"
               >
-                <div class="w-20 h-20 rounded-full overflow-hidden bg-elevated mx-auto mb-1">
+                <div class="w-20 h-20 rounded-full overflow-hidden bg-elevated mx-auto mb-1 transition-transform duration-300 hover:scale-110">
                   <img
                     v-if="actor.profile_path"
                     :src="`https://image.tmdb.org/t/p/w185${actor.profile_path}`"

@@ -56,7 +56,7 @@ J'avais le choix entre les trois. `createGlobalState` de VueUse aurait pu suffir
 
 ### TinyMCE pour l'éditeur de commentaires
 
-C'était la première fois que j'utilisais TinyMCE. Honnêtement je m'attendais à quelque chose de plus compliqué à intégrer, mais ça s'est révélé assez simple — le package `@tinymce/tinymce-vue` propose un composant prêt à l'emploi, et la config se fait via un objet `init` directement dans le template. En une après-midi j'avais l'éditeur en place avec la toolbar personnalisée, le thème sombre et le binding `v-model` qui fonctionne.
+C'était la première fois que j'utilisais TinyMCE. Honnêtement je m'attendais à quelque chose de plus compliqué à intégrer, mais ça s'est révélé assez simple — le package `@tinymce/tinymce-vue` propose un composant prêt à l'emploi, et la config se fait via un objet `init` directement dans le template. En quelques heures j'avais l'éditeur en place avec la toolbar personnalisée, le thème sombre et le binding `v-model` qui fonctionne.
 
 Le seul point un peu délicat était le rendu côté serveur : TinyMCE manipule directement le DOM, donc il faut le charger uniquement côté client avec `<ClientOnly>` et un import dynamique. Une fois ce détail réglé, ça tourne sans problème.
 
