@@ -182,14 +182,15 @@ useSeoMeta({
 
       <template v-if="movie">
         <USeparator class="my-10" />
-        <div class="grid md:grid-cols-2 gap-8">
-          <CommentForm @submit="add" />
-          <div>
-            <h2 class="font-semibold mb-4">
-              Commentaires
-            </h2>
-            <CommentList :comments="comments" />
-          </div>
+        <div class="max-w-2xl mx-auto">
+          <h2 class="text-xl font-semibold mb-6">
+            Commentaires
+          </h2>
+          <CommentForm
+            class="mb-8"
+            @submit="add"
+          />
+          <CommentList :comments="comments" />
         </div>
       </template>
     </UContainer>

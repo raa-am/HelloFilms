@@ -59,10 +59,10 @@ async function onSubmit() {
 </script>
 
 <template>
-  <UPageCard
-    title="Laisser un commentaire"
-    variant="subtle"
-  >
+  <div class="rounded-xl border border-default bg-elevated/40 p-5">
+    <h3 class="font-semibold text-sm mb-4">
+      Laisser un commentaire
+    </h3>
     <form
       class="space-y-4"
       @submit.prevent="onSubmit"
@@ -85,8 +85,8 @@ async function onSubmit() {
       >
         <UTextarea
           v-model="form.message"
-          placeholder="Votre commentaire..."
-          :rows="4"
+          placeholder="Votre avis sur ce film..."
+          :rows="3"
           class="w-full"
           @blur="v$.message.$touch()"
         />
@@ -96,19 +96,19 @@ async function onSubmit() {
         label="Note"
         :error="v$.rating.$error ? v$.rating.$errors[0]?.$message as string : undefined"
       >
-        <div class="flex items-center gap-2">
-          <UButton
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <button
             v-for="n in 10"
             :key="n"
-            :variant="form.rating >= n ? 'solid' : 'outline'"
-            color="primary"
-            size="xs"
-            class="w-8 h-8"
             type="button"
+            class="w-8 h-8 rounded-lg text-xs font-semibold transition-colors"
+            :class="form.rating >= n
+              ? 'bg-primary text-white'
+              : 'bg-elevated border border-default text-muted hover:border-primary hover:text-primary'"
             @click="form.rating = n"
           >
             {{ n }}
-          </UButton>
+          </button>
         </div>
       </UFormField>
 
@@ -120,5 +120,5 @@ async function onSubmit() {
         Publier
       </UButton>
     </form>
-  </UPageCard>
+  </div>
 </template>
