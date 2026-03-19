@@ -2,7 +2,6 @@
 import { useVuelidate } from '@vuelidate/core'
 import { required, minLength, maxLength, between, helpers } from '@vuelidate/validators'
 
-
 const emit = defineEmits<{
   submit: [data: { username: string, message: string, rating: number }]
 }>()
