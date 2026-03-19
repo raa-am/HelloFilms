@@ -52,7 +52,7 @@ Vuetify était listé comme option dans le cahier des charges, mais j'ai préfé
 
 ### Pourquoi Pinia plutôt que Harlem ou createGlobalState ?
 
-J'avais le choix entre les trois. `createGlobalState` de VueUse aurait pu suffire pour quelque chose de simple, mais dès qu'on a de la pagination, une recherche et du SSR à gérer, ça devient vite limité. Harlem je le connaissais de nom mais peu utilisé en pratique, et reprendre un projet avec un store peu répandu c'est toujours un peu pénible. Pinia c'est le choix standard aujourd'hui pour Vue 3, la doc est bonne, les DevTools fonctionnent bien avec, et `@pinia/nuxt` gère l'hydratation SSR automatiquement — pas grand chose à configurer.
+J'avais le choix entre les trois. `createGlobalState` de VueUse aurait pu suffire pour quelque chose de simple, mais dès qu'on a de la pagination, une recherche et du SSR à gérer, ça devient vite limité. VueUse est déjà utilisé dans le projet pour `useLocalStorage` et `useIntersectionObserver`, mais `createGlobalState` pour gérer un état global aussi complexe c'est pas vraiment sa vocation. Harlem je le connaissais de nom mais peu utilisé en pratique, et reprendre un projet avec un store peu répandu c'est toujours un peu pénible. Pinia c'est le choix standard aujourd'hui pour Vue 3, la doc est bonne, les DevTools fonctionnent bien avec, et `@pinia/nuxt` gère l'hydratation SSR automatiquement — pas grand chose à configurer.
 
 ### TinyMCE pour l'éditeur de commentaires
 
