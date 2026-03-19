@@ -133,7 +133,6 @@ async function onSubmit() {
       <UButton
         type="submit"
         color="primary"
-        class="w-full"
       >
         Publier
       </UButton>

@@ -65,9 +65,10 @@ function onSearch(value: string) {
     <template v-else>
       <UPageGrid>
         <MovieCard
-          v-for="movie in store.movies"
+          v-for="(movie, index) in store.movies"
           :key="movie.id"
           :movie="movie"
+          :index="index"
         />
         <template v-if="store.pending">
           <MovieCardSkeleton

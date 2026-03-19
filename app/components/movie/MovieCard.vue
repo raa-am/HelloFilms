@@ -3,6 +3,7 @@ import type { Movie } from '~/types/tmdb'
 
 const props = defineProps<{
   movie: Movie
+  index?: number
 }>()
 
 // w500 est un bon compromis qualité/performance pour une grille de cartes
@@ -16,12 +17,30 @@ const imageUrl = computed(() =>
 const year = computed(() =>
   props.movie.release_date ? props.movie.release_date.slice(0, 4) : ''
 )
+
+const cardRef = ref<HTMLElement | null>(null)
+const visible = ref(false)
+
+// Déclenche l'animation uniquement quand la carte entre dans le viewport
+useIntersectionObserver(cardRef, ([entry]) => {
+  if (entry?.isIntersecting) {
+    visible.value = true
+  }
+}, { threshold: 0.1 })
+
+// Délai en cascade : les cartes d'une même rangée arrivent les unes après les autres
+const delay = computed(() => `${((props.index ?? 0) % 4) * 80}ms`)
 </script>
 
 <template>
   <NuxtLink
+    ref="cardRef"
     :to="`/movies/${movie.id}`"
-    class="group block animate-fade-up"
+    class="group block transition-all duration-500"
+    :class="visible
+      ? 'opacity-100 translate-y-0'
+      : 'opacity-0 translate-y-6'"
+    :style="{ transitionDelay: delay }"
   >
     <div class="rounded-xl overflow-hidden bg-elevated transition-transform duration-200 group-hover:-translate-y-1 group-hover:shadow-lg">
       <div class="aspect-[2/3] bg-accented">
