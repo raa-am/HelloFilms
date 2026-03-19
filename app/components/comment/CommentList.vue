@@ -24,7 +24,9 @@ const paginated = computed(() => {
 })
 
 // Remet la pagination à la première page quand l'ordre change
-watch(order, () => { page.value = 1 })
+watch(order, () => {
+  page.value = 1
+})
 
 const options = [
   { label: 'Plus récent', value: 'desc' as SortOrder },
