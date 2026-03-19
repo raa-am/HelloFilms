@@ -7,6 +7,8 @@ const props = defineProps<{
 
 type SortOrder = 'desc' | 'asc'
 const order = ref<SortOrder>('desc')
+const page = ref(1)
+const perPage = 10
 
 const sorted = computed(() =>
   [...props.comments].sort((a, b) =>
@@ -14,12 +16,21 @@ const sorted = computed(() =>
   )
 )
 
+const totalPages = computed(() => Math.ceil(sorted.value.length / perPage))
+
+const paginated = computed(() => {
+  const start = (page.value - 1) * perPage
+  return sorted.value.slice(start, start + perPage)
+})
+
+// Remet la pagination à la première page quand l'ordre change
+watch(order, () => { page.value = 1 })
+
 const options = [
   { label: 'Plus récent', value: 'desc' as SortOrder },
   { label: 'Plus ancien', value: 'asc' as SortOrder }
 ]
 
-// Formate un timestamp en date lisible, ex: "15 mars 2024"
 function formatDate(ts: number) {
   return new Intl.DateTimeFormat('fr-FR', {
     day: 'numeric',
@@ -30,12 +41,14 @@ function formatDate(ts: number) {
 </script>
 
 <template>
-  <div class="space-y-3">
+  <div class="space-y-4">
     <div
       v-if="comments.length > 0"
-      class="flex items-center justify-between mb-1"
+      class="flex items-center justify-between"
     >
-      <span class="text-xs text-muted">{{ comments.length }} commentaire{{ comments.length > 1 ? 's' : '' }}</span>
+      <span class="text-sm text-muted">
+        {{ comments.length }} commentaire{{ comments.length > 1 ? 's' : '' }}
+      </span>
       <USelect
         v-model="order"
         :items="options"
@@ -46,13 +59,13 @@ function formatDate(ts: number) {
 
     <p
       v-if="comments.length === 0"
-      class="text-sm text-muted text-center py-8"
+      class="text-sm text-muted text-center py-12"
     >
-      Aucun commentaire pour ce film.
+      Aucun commentaire pour ce film. Soyez le premier !
     </p>
 
     <div
-      v-for="comment in sorted"
+      v-for="comment in paginated"
       :key="comment.id"
       class="rounded-xl border border-default bg-elevated/40 p-4"
     >
@@ -83,6 +96,38 @@ function formatDate(ts: number) {
       <div
         class="text-sm leading-relaxed text-muted pl-9 prose prose-sm prose-invert max-w-none"
         v-html="comment.message"
+      />
+    </div>
+
+    <!-- Pagination -->
+    <div
+      v-if="totalPages > 1"
+      class="flex items-center justify-center gap-2 pt-2"
+    >
+      <UButton
+        variant="ghost"
+        size="xs"
+        icon="i-lucide-chevron-left"
+        :disabled="page === 1"
+        @click="page--"
+      />
+      <button
+        v-for="p in totalPages"
+        :key="p"
+        class="w-7 h-7 rounded text-xs font-semibold transition-colors"
+        :class="p === page
+          ? 'bg-primary text-white'
+          : 'text-muted hover:text-default'"
+        @click="page = p"
+      >
+        {{ p }}
+      </button>
+      <UButton
+        variant="ghost"
+        size="xs"
+        icon="i-lucide-chevron-right"
+        :disabled="page === totalPages"
+        @click="page++"
       />
     </div>
   </div>

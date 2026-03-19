@@ -182,15 +182,18 @@ useSeoMeta({
 
       <template v-if="movie">
         <USeparator class="my-10" />
-        <div class="max-w-2xl mx-auto">
-          <h2 class="text-xl font-semibold mb-6">
-            Commentaires
-          </h2>
-          <CommentForm
-            class="mb-8"
-            @submit="add"
-          />
-          <CommentList :comments="comments" />
+        <h2 class="text-xl font-semibold mb-6">
+          Commentaires
+        </h2>
+        <div class="flex flex-col lg:flex-row gap-8 items-start">
+          <!-- Formulaire sticky à gauche -->
+          <div class="w-full lg:flex-1 lg:sticky lg:top-20">
+            <CommentForm @submit="add" />
+          </div>
+          <!-- Liste des commentaires à droite -->
+          <div class="w-full lg:flex-1 min-w-0">
+            <CommentList :comments="comments" />
+          </div>
         </div>
       </template>
     </UContainer>
