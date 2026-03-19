@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core'
 import { required, minLength, maxLength, between, helpers } from '@vuelidate/validators'
+// Import dynamique pour éviter les erreurs SSR (TinyMCE manipule le DOM directement)
+const Editor = defineAsyncComponent(() =>
+  import('@tinymce/tinymce-vue').then(m => m.default)
+)
 
 const emit = defineEmits<{
   submit: [data: { username: string, message: string, rating: number }]
@@ -18,12 +22,6 @@ const alphaOnly = helpers.withMessage(
   helpers.regex(/^[a-zA-ZÀ-ÿ\s]+$/)
 )
 
-// Alphanumérique + ponctuation courante — on bloque le HTML et les caractères exotiques
-const alphanumeric = helpers.withMessage(
-  'Le message ne doit contenir que des caractères alphanumériques.',
-  helpers.regex(/^[a-zA-Z0-9À-ÿ\s.,!?'"()-]+$/)
-)
-
 const rules = {
   username: {
     required: helpers.withMessage('Le nom est requis.', required),
@@ -34,8 +32,7 @@ const rules = {
   message: {
     required: helpers.withMessage('Le message est requis.', required),
     minLength: helpers.withMessage('Minimum 3 caractères.', minLength(3)),
-    maxLength: helpers.withMessage('Maximum 500 caractères.', maxLength(500)),
-    alphanumeric
+    maxLength: helpers.withMessage('Maximum 500 caractères.', maxLength(500))
   },
   rating: {
     between: helpers.withMessage('La note doit être entre 1 et 10.', between(1, 10))
@@ -43,6 +40,17 @@ const rules = {
 }
 
 const v$ = useVuelidate(rules, form)
+
+// Configuration TinyMCE — toolbar minimaliste adaptée aux commentaires
+const editorConfig = {
+  height: 180,
+  menubar: false,
+  plugins: ['lists', 'emoticons'],
+  toolbar: 'bold italic underline | bullist numlist | link emoticons',
+content_style: 'body { background: #0f172b; color: #fff; font-family: inherit; font-size: 14px; }',
+  skin: 'oxide-dark',
+  content_css: 'dark'
+}
 
 async function onSubmit() {
   const valid = await v$.value.$validate()
@@ -83,13 +91,23 @@ async function onSubmit() {
         label="Message"
         :error="v$.message.$error ? v$.message.$errors[0]?.$message as string : undefined"
       >
-        <UTextarea
-          v-model="form.message"
-          placeholder="Votre avis sur ce film..."
-          :rows="3"
-          class="w-full"
-          @blur="v$.message.$touch()"
-        />
+        <!-- TinyMCE chargé uniquement côté client (pas de SSR) -->
+        <ClientOnly>
+          <Editor
+            v-model="form.message"
+            api-key="jrjcz5mhmnzr7xp1gfm9hfmnyjp5xksxyw0afg139uasgpo9"
+            :init="editorConfig"
+            @blur="v$.message.$touch()"
+          />
+          <template #fallback>
+            <UTextarea
+              v-model="form.message"
+              placeholder="Votre avis sur ce film..."
+              :rows="3"
+              class="w-full"
+            />
+          </template>
+        </ClientOnly>
       </UFormField>
 
       <UFormField

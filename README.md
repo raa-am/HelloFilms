@@ -48,25 +48,21 @@ Interface cinéma développée dans le cadre du test technique HelloCSE, en util
 
 ### Pourquoi Nuxt UI 4 plutôt que Vuetify ?
 
-Vuetify était mentionné comme option dans le cahier des charges. Nuxt UI 4 a été préféré pour plusieurs raisons :
-
-1. **Intégration native Nuxt** — conçu spécifiquement pour l'écosystème Nuxt, sans configuration supplémentaire
-2. **Basé sur TailwindCSS** — déjà requis dans le projet, ce qui évite tout conflit de styles entre les deux systèmes
-3. **Composants modernes** — `UPageCard`, `USkeleton`, `UForm` sont alignés avec les patterns Vue 3 et la Composition API
+Vuetify était listé comme option dans le cahier des charges, mais j'ai préféré partir sur Nuxt UI 4. La raison principale c'est que Nuxt UI est construit sur TailwindCSS qui était déjà requis — ça évite d'avoir deux systèmes de styles qui se marchent dessus. Et comme c'est fait spécifiquement pour Nuxt, les composants comme `USkeleton` ou `UPageCard` s'intègrent sans friction. Vuetify aurait demandé plus de config pour le faire cohabiter avec Tailwind, j'ai préféré éviter ça.
 
 ### Pourquoi Pinia plutôt que Harlem ou createGlobalState ?
 
-Les trois options étaient mentionnées dans le cahier des charges. Pinia s'est imposé naturellement pour plusieurs raisons :
+J'avais le choix entre les trois. `createGlobalState` de VueUse aurait pu suffire pour quelque chose de simple, mais dès qu'on a de la pagination, une recherche et du SSR à gérer, ça devient vite limité. Harlem je le connaissais de nom mais peu utilisé en pratique, et reprendre un projet avec un store peu répandu c'est toujours un peu pénible. Pinia c'est le choix standard aujourd'hui pour Vue 3, la doc est bonne, les DevTools fonctionnent bien avec, et `@pinia/nuxt` gère l'hydratation SSR automatiquement — pas grand chose à configurer.
 
-- **Standard Vue 3** — c'est la solution de store officielle recommandée par l'équipe Vue, ce qui garantit une bonne pérennité et une doc solide
-- **Intégration Nuxt native** — le module `@pinia/nuxt` gère automatiquement le SSR et l'hydratation, sans configuration supplémentaire
-- **DevTools** — Pinia s'intègre avec les Vue DevTools, ce qui facilite le debug de l'état global pendant le développement
-- **`createGlobalState`** (VueUse) est pratique pour des états simples locaux, mais n'offre pas la persistance SSR ni l'outillage de Pinia — ça aurait été suffisant pour un petit composable, pas pour gérer la liste de films avec pagination et recherche
-- **Harlem** est une alternative intéressante mais beaucoup moins répandue dans l'écosystème, ce qui aurait rendu le code moins lisible pour quelqu'un qui reprend le projet
+### TinyMCE pour l'éditeur de commentaires
+
+C'était la première fois que j'utilisais TinyMCE. Honnêtement je m'attendais à quelque chose de plus compliqué à intégrer, mais ça s'est révélé assez simple — le package `@tinymce/tinymce-vue` propose un composant prêt à l'emploi, et la config se fait via un objet `init` directement dans le template. En une après-midi j'avais l'éditeur en place avec la toolbar personnalisée, le thème sombre et le binding `v-model` qui fonctionne.
+
+Le seul point un peu délicat était le rendu côté serveur : TinyMCE manipule directement le DOM, donc il faut le charger uniquement côté client avec `<ClientOnly>` et un import dynamique. Une fois ce détail réglé, ça tourne sans problème.
 
 ### Pourquoi Vitest plutôt que Jest ?
 
-Jest était mentionné comme option dans le cahier des charges. Vitest a été préféré car il partage la même configuration Vite que le projet — pas de transpilation séparée, pas de config babel, les mêmes alias de chemins fonctionnent directement. Concrètement, les tests s'exécutent beaucoup plus vite et la configuration se résume à un seul fichier `vitest.config.ts`. Avec Jest, il aurait fallu gérer la compatibilité ESM manuellement, ce qui est particulièrement pénible dans un projet Nuxt 4 full ESM.
+Sur un projet Nuxt 4 qui est full ESM, Jest c'est une vraie galère à configurer — il faut gérer la compatibilité ESM manuellement, souvent avec Babel, et les alias de chemins ne fonctionnent pas out of the box. Vitest partage la même config Vite que le projet, donc les alias `~` fonctionnent directement, pas de transpilation séparée, et les tests tournent nettement plus vite. La config tient en une vingtaine de lignes dans `vitest.config.ts`, c'est tout.
 
 ---
 

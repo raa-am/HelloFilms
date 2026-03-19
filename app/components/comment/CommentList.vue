@@ -51,9 +51,11 @@ function formatDate(ts: number) {
           <span class="text-xs font-semibold text-default">{{ comment.rating }}/10</span>
         </div>
       </div>
-      <p class="text-sm leading-relaxed text-muted pl-9">
-        {{ comment.message }}
-      </p>
+      <!-- v-html nécessaire car TinyMCE génère du HTML formaté -->
+      <div
+        class="text-sm leading-relaxed text-muted pl-9 prose prose-sm prose-invert max-w-none"
+        v-html="comment.message"
+      />
     </div>
   </div>
 </template>
