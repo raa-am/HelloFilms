@@ -47,7 +47,7 @@ const editorConfig = {
   menubar: false,
   plugins: ['lists', 'emoticons'],
   toolbar: 'bold italic underline | bullist numlist | link emoticons',
-content_style: 'body { background: #0f172b; color: #fff; font-family: inherit; font-size: 14px; }',
+  content_style: 'body { background: #0f172b; color: #fff; font-family: inherit; font-size: 14px; }',
   skin: 'oxide-dark',
   content_css: 'dark'
 }

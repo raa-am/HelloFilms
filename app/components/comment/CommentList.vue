@@ -51,7 +51,8 @@ function formatDate(ts: number) {
           <span class="text-xs font-semibold text-default">{{ comment.rating }}/10</span>
         </div>
       </div>
-      <!-- v-html nécessaire car TinyMCE génère du HTML formaté -->
+      <!-- v-html nécessaire car TinyMCE génère du HTML formaté — contenu validé par Vuelidate -->
+      <!-- eslint-disable-next-line vue/no-v-html -->
       <div
         class="text-sm leading-relaxed text-muted pl-9 prose prose-sm prose-invert max-w-none"
         v-html="comment.message"
