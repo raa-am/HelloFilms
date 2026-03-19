@@ -4,6 +4,7 @@ const movieId = route.params.id as string
 const { movie, topCast, directors, pending, error } = useMovieDetail(movieId)
 const { comments, add } = useComments(movieId)
 
+// w500 suffit pour l'affiche, on garde l'original pour le backdrop pleine largeur
 const posterUrl = computed(() =>
   movie.value?.poster_path
     ? `https://image.tmdb.org/t/p/w500${movie.value.poster_path}`
@@ -178,17 +179,20 @@ useSeoMeta({
           </div>
         </div>
       </div>
-      <USeparator class="my-10" />
 
-      <div class="grid md:grid-cols-2 gap-8">
-        <CommentForm @submit="add" />
-        <div>
-          <h2 class="font-semibold mb-4">
+      <template v-if="movie">
+        <USeparator class="my-10" />
+        <div class="max-w-2xl mx-auto">
+          <h2 class="text-xl font-semibold mb-6">
             Commentaires
           </h2>
+          <CommentForm
+            class="mb-8"
+            @submit="add"
+          />
           <CommentList :comments="comments" />
         </div>
-      </div>
+      </template>
     </UContainer>
   </div>
 </template>

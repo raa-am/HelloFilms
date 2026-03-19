@@ -1,6 +1,7 @@
 import type { Comment } from '~/types/comment'
 
 export function useComments(movieId: string) {
+  // Clé unique par film pour isoler les commentaires dans le localStorage
   const storageKey = `hellofilms:comments:${movieId}`
 
   const comments = useLocalStorage<Comment[]>(storageKey, [])

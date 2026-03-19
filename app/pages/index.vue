@@ -26,6 +26,7 @@ if (initialData.value) {
   store.init(initialData.value.results, initialData.value.total_pages)
 }
 
+// Élément invisible en bas de page — quand il entre dans le viewport, on charge la suite
 const sentinel = ref<HTMLElement | null>(null)
 
 useIntersectionObserver(sentinel, ([entry]) => {
