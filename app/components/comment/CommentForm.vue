@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { useVuelidate } from '@vuelidate/core'
 import { required, minLength, maxLength, between, helpers } from '@vuelidate/validators'
+
 // Import dynamique pour éviter les erreurs SSR (TinyMCE manipule le DOM directement)
 const Editor = defineAsyncComponent(() =>
   import('@tinymce/tinymce-vue').then(m => m.default)
@@ -16,10 +17,22 @@ const form = reactive({
   rating: 0
 })
 
+// TinyMCE stocke du HTML — on extrait le texte brut pour la validation Vuelidate
+const messageText = computed(() => {
+  if (!form.message) return ''
+  return form.message.replace(/<[^>]*>/g, '').trim()
+})
+
 // Lettres uniquement (accents inclus) — pas de chiffres ni de caractères spéciaux
 const alphaOnly = helpers.withMessage(
   'Le nom ne doit contenir que des lettres.',
   helpers.regex(/^[a-zA-ZÀ-ÿ\s]+$/)
+)
+
+// Alphanumérique + ponctuation courante sur le texte brut extrait du HTML
+const alphanumeric = helpers.withMessage(
+  'Le message ne doit contenir que des caractères alphanumériques.',
+  helpers.regex(/^[a-zA-Z0-9À-ÿ\s.,!?'"()\-\n]+$/)
 )
 
 const rules = {
@@ -29,17 +42,25 @@ const rules = {
     maxLength: helpers.withMessage('Maximum 50 caractères.', maxLength(50)),
     alphaOnly
   },
-  message: {
-    required: helpers.withMessage('Le message est requis.', required),
+  messageText: {
+    required: helpers.withMessage('Le message est requis.', (val: string) => val.length > 0),
     minLength: helpers.withMessage('Minimum 3 caractères.', minLength(3)),
-    maxLength: helpers.withMessage('Maximum 500 caractères.', maxLength(500))
+    maxLength: helpers.withMessage('Maximum 500 caractères.', maxLength(500)),
+    alphanumeric
   },
   rating: {
     between: helpers.withMessage('La note doit être entre 1 et 10.', between(1, 10))
   }
 }
 
-const v$ = useVuelidate(rules, form)
+// On valide sur un objet combinant form + messageText
+const validationState = reactive({
+  get username() { return form.username },
+  get messageText() { return messageText.value },
+  get rating() { return form.rating }
+})
+
+const v$ = useVuelidate(rules, validationState)
 
 // Configuration TinyMCE — toolbar minimaliste adaptée aux commentaires
 const editorConfig = {
@@ -91,7 +112,8 @@ async function onSubmit() {
 
       <UFormField
         label="Message"
-        :error="v$.message.$error ? v$.message.$errors[0]?.$message as string : undefined"
+        :error="v$.messageText.$error ? v$.messageText.$errors[0]?.$message as string : undefined"
+        :hint="`${messageText.length} / 500`"
       >
         <!-- TinyMCE chargé uniquement côté client (pas de SSR) -->
         <ClientOnly>
@@ -99,7 +121,7 @@ async function onSubmit() {
             v-model="form.message"
             api-key="jrjcz5mhmnzr7xp1gfm9hfmnyjp5xksxyw0afg139uasgpo9"
             :init="editorConfig"
-            @blur="v$.message.$touch()"
+            @blur="v$.messageText.$touch()"
           />
           <template #fallback>
             <UTextarea
