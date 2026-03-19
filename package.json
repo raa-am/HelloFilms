@@ -10,7 +10,10 @@
     "lint": "eslint .",
     "typecheck": "nuxt typecheck",
     "test": "vitest run",
-    "test:watch": "vitest"
+    "test:watch": "vitest",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "stylelint": "stylelint \"**/*.{css,scss,vue}\""
   },
   "dependencies": {
     "@iconify-json/lucide": "^1.2.98",
