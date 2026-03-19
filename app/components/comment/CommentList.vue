@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import type { Comment } from '~/types/comment'
 
+const { sanitize } = useSanitize()
+
 const props = defineProps<{
   comments: Comment[]
 }>()
@@ -93,11 +95,10 @@ function formatDate(ts: number) {
           <span class="text-xs font-semibold text-default">{{ comment.rating }}/10</span>
         </div>
       </div>
-      <!-- v-html nécessaire car TinyMCE génère du HTML formaté — contenu validé par Vuelidate -->
-      <!-- eslint-disable-next-line vue/no-v-html -->
+      <!-- v-html nécessaire car TinyMCE génère du HTML — contenu validé par Vuelidate avant stockage -->
       <div
         class="text-sm leading-relaxed text-muted pl-9 prose prose-sm prose-invert max-w-none"
-        v-html="comment.message"
+        v-html="sanitize(comment.message)"
       />
     </div>
 

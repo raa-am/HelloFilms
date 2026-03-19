@@ -45,6 +45,7 @@ Interface cinéma développée dans le cadre du test technique HelloCSE, en util
 | **Pinia** | Store global (liste, recherche, état UI) | bonus |
 | **Nuxt UI 4** | Composants UI | bonus |
 | **TinyMCE** | Éditeur WYSIWYG pour les commentaires | bonus |
+| **DOMPurify** | Sanitisation du HTML généré par TinyMCE | bonus |
 
 ### Pourquoi Nuxt UI 4 plutôt que Vuetify ?
 
@@ -59,6 +60,8 @@ J'avais le choix entre les trois. `createGlobalState` de VueUse aurait pu suffir
 C'était la première fois que j'utilisais TinyMCE. Honnêtement je m'attendais à quelque chose de plus compliqué à intégrer, mais ça s'est révélé assez simple — le package `@tinymce/tinymce-vue` propose un composant prêt à l'emploi, et la config se fait via un objet `init` directement dans le template. En quelques heures j'avais l'éditeur en place avec la toolbar personnalisée, le thème sombre et le binding `v-model` qui fonctionne.
 
 Le seul point un peu délicat était le rendu côté serveur : TinyMCE manipule directement le DOM, donc il faut le charger uniquement côté client avec `<ClientOnly>` et un import dynamique. Une fois ce détail réglé, ça tourne sans problème.
+
+TinyMCE génère du HTML formaté (`<p><strong>texte</strong></p>`), ce qui veut dire qu'on ne peut pas afficher le contenu avec une simple interpolation Vue — il faut `v-html`. Sauf que `v-html` ouvre la porte aux attaques XSS si le contenu n'est pas nettoyé. J'ai donc ajouté **DOMPurify** qui passe le HTML dans un sanitizer avant affichage : toutes les balises dangereuses (`<script>`, attributs `onclick`, etc.) sont retirées, le formatage visible reste intact. ESLint ne se plaint plus du `v-html` et la sécurité est réellement assurée — pas juste contournée avec un commentaire `eslint-disable`.
 
 ### Pourquoi Vitest plutôt que Jest ?
 
